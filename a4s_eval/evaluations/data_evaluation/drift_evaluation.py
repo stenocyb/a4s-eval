@@ -10,13 +10,6 @@ from a4s_eval.utils.logging import get_logger
 logger = get_logger()
 
 
-@data_evaluator(name="Empty data evaluator")
-def empty_data_evaluator(
-    datashape: DataShape, reference: Dataset, evaluated: Dataset
-) -> list[Metric]:
-    return []
-
-
 def numerical_drift_test(x_ref: pd.Series, x_new: pd.Series) -> float:
     """Calculate drift between two numerical distributions using Wasserstein distance.
 
