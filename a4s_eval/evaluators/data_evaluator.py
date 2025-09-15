@@ -23,17 +23,20 @@ class DataEvaluator(Protocol):
 
 
 class DataEvaluatorRegistry:
-    def __init__(self):
-        self._functions = {}
+    def __init__(self) -> None:
+        self._functions: dict[str, DataEvaluator] = {}
         logger.debug("DataEvaluatorRegistry initialized")
 
-    def register(self, name: str, func: DataEvaluator):
+    def register(self, name: str, func: DataEvaluator) -> None:
         logger.debug(f"Registering data evaluator: {name}")
         self._functions[name] = func
 
     def __iter__(self) -> Iterator[tuple[str, DataEvaluator]]:
         logger.debug(f"Iterating over {len(self._functions)} registered evaluators")
         return iter(self._functions.items())
+
+    def get_functions(self) -> dict[str, DataEvaluator]:
+        return self._functions
 
 
 data_evaluator_registry = DataEvaluatorRegistry()

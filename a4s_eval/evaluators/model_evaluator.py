@@ -26,14 +26,17 @@ class ModelPredProbaEvaluator(Protocol):
 
 
 class ModelPredProbaEvaluatorRegistry:
-    def __init__(self):
-        self._functions = {}
+    def __init__(self) -> None:
+        self._functions: dict[str, ModelPredProbaEvaluator] = {}
 
-    def register(self, name: str, func: ModelPredProbaEvaluator):
+    def register(self, name: str, func: ModelPredProbaEvaluator) -> None:
         self._functions[name] = func
 
     def __iter__(self) -> Iterator[tuple[str, ModelPredProbaEvaluator]]:
         return iter(self._functions.items())
+
+    def get_functions(self) -> dict[str, ModelPredProbaEvaluator]:
+        return self._functions
 
 
 model_pred_proba_evaluator_registry = ModelPredProbaEvaluatorRegistry()
