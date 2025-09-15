@@ -58,6 +58,9 @@ jobs:
   build:
     name: Build image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write    
     needs: [checks]
     steps:
       - name: Extract metadata
