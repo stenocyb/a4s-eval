@@ -23,24 +23,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Cache uv dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.UV_CACHE_DIR }}
-          key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
-          restore-keys: |
-            uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
-            uv-${{ runner.os }}
-
       - name: Install dependencies
         run: uv sync
-
       - name: Do the linting
         run: uv run ruff check .
-
       - name: Do the format check
         run: uv run ruff format --check .
-
       - name: Prune package cache
         run: uv cache prune --ci
