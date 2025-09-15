@@ -7,9 +7,9 @@ on:
     branches: [main, master]
 
 env:
-  UV_VERSION: "0.5"
-  PYTHON_VERSION: "3.12"
-  BASE_LAYER: "bookworm-slim"
+  UV_VERSION: ${{ vars.A4S_EVAL_UV_VERSION }}
+  PYTHON_VERSION: ${{ vars.A4S_EVAL_PYTHON_VERSION }}
+  BASE_LAYER: ${{ vars.A4S_EVAL_BASE_LAYER }}
   UV_LINK_MODE: "copy"
   UV_CACHE_DIR: ".uv-cache"
   REGISTRY: ghcr.io
@@ -19,7 +19,7 @@ jobs:
   checks:
     name: Linting and formatting stage
     runs-on: ubuntu-latest
-    container: ghcr.io/astral-sh/uv:${{ env.UV_VERSION }}-python${{ env.PYTHON_VERSION }}-${{env.BASE_LAYER}}
+    container: ghcr.io/astral-sh/uv:${{ vars.A4S_EVAL_UV_VERSION }}-python${{ vars.A4S_EVAL_PYTHON_VERSION }}-${{ vars.A4S_EVAL_BASE_LAYER }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
