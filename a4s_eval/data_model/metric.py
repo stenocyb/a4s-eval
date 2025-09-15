@@ -21,9 +21,9 @@ class Metric(BaseModel):
     feature_pid: uuid.UUID | None = None
 
     @field_serializer("time")
-    def serialize_dt(self, dt: datetime, _info) -> str:
+    def serialize_dt(self, dt: datetime) -> str:
         return dt.isoformat()
 
     @field_serializer("feature_pid")
-    def serialize_pid(self, pid: uuid.UUID | None, _info) -> str | None:
+    def serialize_pid(self, pid: uuid.UUID | None) -> str | None:
         return str(pid) if pid is not None else None

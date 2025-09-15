@@ -87,10 +87,13 @@ def finalize_evaluation(evaluation_id: uuid.UUID) -> None:
 
 
 @celery_app.task
-def handle_error(evaluation_id, request, exc, traceback) -> None:
+def handle_error(
+    evaluation_id: uuid.UUID,
+    request: object,
+    exc: BaseException,
+    traceback: object,
+) -> None:
     print(f"Error in evaluation {evaluation_id}:")
-
     print(f"--\n\n{request} {exc} {traceback}")
-
     mark_failed(evaluation_id)
     print(f"Evaluation {evaluation_id} marked as failed due to error.")
