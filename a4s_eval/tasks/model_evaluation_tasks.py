@@ -44,13 +44,13 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
         datashape = get_project_datashape(evaluation.project.pid)
 
         x_test = evaluation.dataset.data
-        x_test = x_test[[f.name for f in datashape.features]].to_numpy()
+        x_test_np = x_test[[f.name for f in datashape.features]].to_numpy()
 
         iteration_count = 0
 
         input_name = session.get_inputs()[0].name
         label_name = session.get_outputs()[1].name
-        pred_onx = session.run([label_name], {input_name: x_test})[0]
+        pred_onx = session.run([label_name], {input_name: x_test_np})[0]
         y_pred_proba = np.array([list(d.values()) for d in pred_onx])
         get_logger().info("Computation finished for Y prediction probability.")
 
@@ -96,8 +96,6 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
 
         get_logger().info(f"Total iterations: {iteration_count}")
         get_logger().info(f"Total metrics generated: {len(metrics)}")
-
-        evaluation.dataset.data = x_test
 
         get_logger().debug(f"Posting {len(metrics)} metrics to API...")
         try:

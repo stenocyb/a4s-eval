@@ -76,7 +76,7 @@ def get_redis_backend_url() -> str:
 REDIS_BACKEND_URL = get_redis_backend_url()
 
 
-def get_celery_broker_url():
+def get_celery_broker_url() -> str:
     """Construct Celery broker URL from environment variables."""
     # Try to get the direct URL first
     broker_url = os.getenv("CELERY_BROKER_URL")

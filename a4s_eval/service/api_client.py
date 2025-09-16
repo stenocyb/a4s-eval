@@ -102,7 +102,7 @@ def mark_completed(evaluation_pid: uuid.UUID) -> requests.Response:
 
 def mark_failed(evaluation_pid: uuid.UUID) -> None:
     payload = EvaluationStatusUpdateDTO(status="failed").model_dump()
-    return requests.put(f"{API_URL_PREFIX}/evaluations/{evaluation_pid}", json=payload)
+    requests.put(f"{API_URL_PREFIX}/evaluations/{evaluation_pid}", json=payload)
 
 
 def get_dataset_data(dataset_pid: uuid.UUID) -> pd.DataFrame:
@@ -123,7 +123,7 @@ def get_dataset_data(dataset_pid: uuid.UUID) -> pd.DataFrame:
 
 
 def get_onnx_model(
-    model_pid: str,
+    model_pid: uuid.UUID,
 ) -> ort.capi.onnxruntime_inference_collection.InferenceSession:
     resp = requests.get(f"{API_URL_PREFIX}/models/{model_pid}/data", stream=True)
     resp.raise_for_status()
@@ -178,8 +178,8 @@ def post_metrics(evaluation_pid: uuid.UUID, metrics: list[Metric]) -> requests.R
 
     if response.status_code != 201:
         logger.error(f"ERROR: Expected status 201, got {response.status_code}")
-        logger.error(f"Response content: {response.content}")
-        raise ValueError(response.content)
+        logger.error(f"Response content: {response.text}")
+        raise ValueError(response.text)
 
     return response
 

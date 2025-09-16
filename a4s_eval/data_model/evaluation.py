@@ -45,11 +45,11 @@ class Feature(BaseModel):
     max_value: float | Any
 
     @field_serializer("feature_type")
-    def serialize_feature_type(self, feature_type: FeatureType, _info) -> str:
+    def serialize_feature_type(self, feature_type: FeatureType) -> str:
         return feature_type.value
 
     @field_serializer("pid")
-    def serialize_pid(self, pid: uuid.UUID | None, _info) -> str | None:
+    def serialize_pid(self, pid: uuid.UUID | None) -> str | None:
         return str(pid) if pid is not None else None
 
 
