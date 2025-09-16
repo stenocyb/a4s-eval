@@ -12,7 +12,7 @@ from a4s_eval.service.api_client import (
     get_evaluation,
     get_onnx_model,
     get_project_datashape,
-    post_metrics,
+    post_measures,
 )
 from a4s_eval.utils.dates import DateIterator
 from a4s_eval.utils.env import API_URL_PREFIX
@@ -99,7 +99,7 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
 
         get_logger().debug(f"Posting {len(metrics)} metrics to API...")
         try:
-            response = post_metrics(evaluation_pid, metrics)
+            response = post_measures(evaluation_pid, metrics)
             get_logger().info(
                 f"Metrics posted successfully, status: {response.status_code}."
             )

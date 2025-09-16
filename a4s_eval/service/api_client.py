@@ -19,11 +19,6 @@ class EvaluationStatusUpdateDTO(BaseModel):
     status: str
 
 
-class MetricDTO(BaseModel):
-    name: str
-    value: float | str
-
-
 def fetch_pending_evaluations() -> list[uuid.UUID]:
     """Fetch pending evaluations from the API.
 
@@ -149,7 +144,9 @@ def get_evaluation(
     return Evaluation.model_validate(get_evaluation_request(evaluation_pid))
 
 
-def post_metrics(evaluation_pid: uuid.UUID, metrics: list[Measure]) -> requests.Response:
+def post_measures(
+    evaluation_pid: uuid.UUID, metrics: list[Measure]
+) -> requests.Response:
     """Post metrics to the API for a specific evaluation.
 
     Args:
