@@ -123,7 +123,7 @@ def get_dataset_data(dataset_pid: uuid.UUID) -> pd.DataFrame:
 
 
 def get_onnx_model(
-    model_pid: str,
+    model_pid: uuid.UUID,
 ) -> ort.capi.onnxruntime_inference_collection.InferenceSession:
     resp = requests.get(f"{API_URL_PREFIX}/models/{model_pid}/data", stream=True)
     resp.raise_for_status()

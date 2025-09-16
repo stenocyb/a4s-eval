@@ -60,8 +60,8 @@ def categorical_drift_test(x_ref: pd.Series[int], x_new: pd.Series[int]) -> floa
 
 
 def feature_drift_test(
-    x_ref: pd.Series,
-    x_new: pd.Series,
+    x_ref: pd.Series[float],
+    x_new: pd.Series[float],
     feature_type: FeatureType,
     date: pd.Timestamp,
 ) -> Metric:
