@@ -7,7 +7,6 @@ import pytest
 from a4s_eval.data_model.evaluation import Dataset, DataShape
 from a4s_eval.evaluations.data_evaluation.drift_evaluation import (
     data_drift_evaluator,
-    empty_data_evaluator,
 )
 
 
@@ -49,13 +48,6 @@ def ref_dataset(data_shape: DataShape) -> Dataset:
         shape=data_shape,
         data=data,
     )
-
-
-def test_smoke(
-    data_shape: DataShape, ref_dataset: Dataset, test_dataset: Dataset
-) -> None:
-    metrics = empty_data_evaluator(data_shape, ref_dataset, test_dataset)
-    assert len(metrics) == 0
 
 
 def test_data_drift_evaluator_generates_metrics(

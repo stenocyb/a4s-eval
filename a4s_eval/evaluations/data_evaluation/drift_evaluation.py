@@ -10,7 +10,7 @@ from a4s_eval.utils.logging import get_logger
 logger = get_logger()
 
 
-def numerical_drift_test(x_ref: pd.Series[float], x_new: pd.Series[float]) -> float:
+def numerical_drift_test(x_ref: "pd.Series[float]", x_new: "pd.Series[float]") -> float:
     """Calculate drift between two numerical distributions using Wasserstein distance.
 
     Args:
@@ -28,7 +28,7 @@ def numerical_drift_test(x_ref: pd.Series[float], x_new: pd.Series[float]) -> fl
     return distance
 
 
-def categorical_drift_test(x_ref: pd.Series[int], x_new: pd.Series[int]) -> float:
+def categorical_drift_test(x_ref: "pd.Series[int]", x_new: "pd.Series[int]") -> float:
     """Calculate drift between two categorical distributions using Jensen-Shannon distance.
 
     Args:
@@ -60,8 +60,8 @@ def categorical_drift_test(x_ref: pd.Series[int], x_new: pd.Series[int]) -> floa
 
 
 def feature_drift_test(
-    x_ref: pd.Series[float],
-    x_new: pd.Series[float],
+    x_ref: "pd.Series[float]",
+    x_new: "pd.Series[float]",
     feature_type: FeatureType,
     date: pd.Timestamp,
 ) -> Metric:
