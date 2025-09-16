@@ -18,7 +18,7 @@ from sklearn.metrics import (
 )
 
 from a4s_eval.data_model.evaluation import Feature
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 from a4s_eval.data_model.project import Project
 from a4s_eval.utils.dates import DateIterator
 from a4s_eval.utils.logging import get_logger
@@ -70,7 +70,7 @@ str2proba_classification_metric = {
 
 def prediction_metric_test(
     y_true: np.ndarray, y_pred_proba: np.ndarray, current_time: Timestamp
-) -> list[Metric]:
+) -> list[Measure]:
     """Calculate all classification metrics for a set of predictions.
 
     Args:
@@ -79,7 +79,7 @@ def prediction_metric_test(
         current_time: Timestamp for the metrics
 
     Returns:
-        list[Metric]: List of computed metrics
+        list[Measure]: List of computed metrics
     """
     logger.debug(
         f"Starting prediction metric test - y_true shape: {y_true.shape}, y_pred_proba shape: {y_pred_proba.shape}"
@@ -97,7 +97,7 @@ def prediction_metric_test(
     logger.debug("Computing prediction-based metrics")
     for name, score_f in pred_classification_metric.items():
         score = score_f(y_true, y_pred)
-        metric = Metric(
+        metric = Measure(
             name=name,
             score=score,
             time=current_time,
@@ -109,7 +109,7 @@ def prediction_metric_test(
     logger.debug("Computing probability-based metrics")
     for name, score_f in str2proba_classification_metric.items():
         score = score_f(y_true, y_pred_proba)
-        metric = Metric(
+        metric = Measure(
             name=name,
             score=score,
             time=current_time,
@@ -127,7 +127,7 @@ def prediction_test(
     date_feature: Feature,
     target_feature: Feature,
     y_new_pred_proba: np.ndarray,
-) -> list[Metric]:
+) -> list[Measure]:
     """Evaluate model predictions over time windows.
 
     Args:
@@ -138,7 +138,7 @@ def prediction_test(
         y_new_pred_proba: Model's probability predictions
 
     Returns:
-        list[Metric]: List of evaluation metrics for each time window
+        list[Measure]: List of evaluation metrics for each time window
     """
     logger.debug(
         f"Starting prediction test - x_new shape: {x_new.shape}, y_new_pred_proba shape: {y_new_pred_proba.shape}"

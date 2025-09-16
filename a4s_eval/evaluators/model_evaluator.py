@@ -3,7 +3,7 @@ from typing import Callable, Iterator, Protocol
 import numpy as np
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, Model
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 
 
 class ModelPredProbaEvaluator(Protocol):
@@ -13,7 +13,7 @@ class ModelPredProbaEvaluator(Protocol):
         model: Model,
         dataset: Dataset,
         y_pred_proba: np.ndarray,
-    ) -> list[Metric]:
+    ) -> list[Measure]:
         """Run a specific model evaluation.
 
         Args:

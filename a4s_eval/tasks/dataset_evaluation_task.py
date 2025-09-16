@@ -3,7 +3,7 @@ import uuid
 from multiprocessing.util import get_logger
 
 from a4s_eval.celery_app import celery_app
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 from a4s_eval.evaluators.data_evaluator import data_evaluator_registry
 from a4s_eval.service.api_client import (
     get_dataset_data,
@@ -29,7 +29,7 @@ def dataset_evaluation_task(evaluation_pid: uuid.UUID) -> None:
         evaluation.dataset.data = get_dataset_data(evaluation.dataset.pid)
         evaluation.model.dataset.data = get_dataset_data(evaluation.model.dataset.pid)
 
-        metrics: list[Metric] = []
+        metrics: list[Measure] = []
 
         x_test = evaluation.dataset.data
 

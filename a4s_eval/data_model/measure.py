@@ -6,7 +6,7 @@ from datetime import datetime
 from pydantic import BaseModel, field_serializer
 
 
-class Metric(BaseModel):
+class Measure(BaseModel):
     """Represents a single evaluation metric with its value and associated metadata.
 
     This class is used to store various types of metrics including model performance metrics,

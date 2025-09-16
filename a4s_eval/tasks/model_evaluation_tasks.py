@@ -3,7 +3,7 @@ import uuid
 import numpy as np
 
 from a4s_eval.celery_app import celery_app
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 from a4s_eval.evaluators.model_evaluator import (
     model_pred_proba_evaluator_registry,
 )
@@ -39,7 +39,7 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
         evaluation.dataset.data = get_dataset_data(evaluation.dataset.pid)
         session = get_onnx_model(evaluation.model.pid)
 
-        metrics: list[Metric] = []
+        metrics: list[Measure] = []
 
         datashape = get_project_datashape(evaluation.project.pid)
 
