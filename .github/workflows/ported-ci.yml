@@ -63,7 +63,7 @@ jobs:
     permissions:
       contents: read
       packages: write    
-    needs: [checks]
+    needs: [checks,test]
     steps:
       - name: Extract metadata
         id: meta
