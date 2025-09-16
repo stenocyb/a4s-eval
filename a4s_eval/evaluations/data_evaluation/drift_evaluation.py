@@ -10,7 +10,7 @@ from a4s_eval.utils.logging import get_logger
 logger = get_logger()
 
 
-def numerical_drift_test(x_ref: pd.Series, x_new: pd.Series) -> float:
+def numerical_drift_test(x_ref: pd.Series[float], x_new: pd.Series[float]) -> float:
     """Calculate drift between two numerical distributions using Wasserstein distance.
 
     Args:
@@ -28,7 +28,7 @@ def numerical_drift_test(x_ref: pd.Series, x_new: pd.Series) -> float:
     return distance
 
 
-def categorical_drift_test(x_ref: pd.Series, x_new: pd.Series) -> float:
+def categorical_drift_test(x_ref: pd.Series[int], x_new: pd.Series[int]) -> float:
     """Calculate drift between two categorical distributions using Jensen-Shannon distance.
 
     Args:
@@ -54,7 +54,7 @@ def categorical_drift_test(x_ref: pd.Series, x_new: pd.Series) -> float:
     ref_dist = ref_counts.reindex(all_categories, fill_value=0.0)
     new_dist = new_counts.reindex(all_categories, fill_value=0.0)
 
-    distance = jensenshannon(ref_dist.values, new_dist.values)
+    distance = jensenshannon(ref_dist.to_numpy(), new_dist.to_numpy())
     logger.debug(f"Jensen-Shannon distance computed: {distance}")
     return distance
 
