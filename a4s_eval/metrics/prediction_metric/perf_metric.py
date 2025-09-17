@@ -31,15 +31,15 @@ def robust_roc_auc_score(y_true: np.ndarray, y_pred_proba: np.ndarray) -> np.nda
     return roc_auc_score(y_true, y_pred_proba)
 
 
-@prediction_metric(name="Empty model pred proba evaluator")
-def empty_model_evaluator(
+@prediction_metric(name="Empty model pred proba metric")
+def empty_model_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     return []
 
 
-@prediction_metric(name="Classification Performance evaluator: Accuracy")
-def classification_accuracy_evaluator(
+@prediction_metric(name="Classification Performance metric: Accuracy")
+def classification_accuracy_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     date = pd.to_datetime(dataset.data[datashape.date.name]).max()
@@ -56,8 +56,8 @@ def classification_accuracy_evaluator(
     return [metric]
 
 
-@prediction_metric(name="Classification Performance evaluator: F1 Score")
-def classification_f1_score_evaluator(
+@prediction_metric(name="Classification Performance metric: F1 Score")
+def classification_f1_score_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     date = pd.to_datetime(dataset.data[datashape.date.name]).max()
@@ -74,8 +74,8 @@ def classification_f1_score_evaluator(
     return [metric]
 
 
-@prediction_metric(name="Classification Performance evaluator: Precision")
-def classification_precision_evaluator(
+@prediction_metric(name="Classification Performance metric: Precision")
+def classification_precision_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     date = pd.to_datetime(dataset.data[datashape.date.name]).max()
@@ -92,8 +92,8 @@ def classification_precision_evaluator(
     return [metric]
 
 
-@prediction_metric(name="Classification Performance evaluator: Recall")
-def classification_recall_evaluator(
+@prediction_metric(name="Classification Performance metric: Recall")
+def classification_recall_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     date = pd.to_datetime(dataset.data[datashape.date.name]).max()
@@ -111,9 +111,9 @@ def classification_recall_evaluator(
 
 
 @prediction_metric(
-    name="Classification Performance evaluator: Matthews Correlation Coefficient"
+    name="Classification Performance metric: Matthews Correlation Coefficient"
 )
-def classification_matthews_corrcoef_evaluator(
+def classification_matthews_corrcoef_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     date = pd.to_datetime(dataset.data[datashape.date.name]).max()
@@ -130,8 +130,8 @@ def classification_matthews_corrcoef_evaluator(
     return [metric]
 
 
-@prediction_metric(name="Classification Performance evaluator: RROCAUC")
-def classification_roc_auc_evaluator(
+@prediction_metric(name="Classification Performance metric: RROCAUC")
+def classification_roc_auc_metric(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     date = pd.to_datetime(dataset.data[datashape.date.name]).max()

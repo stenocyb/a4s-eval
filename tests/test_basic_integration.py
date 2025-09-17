@@ -44,17 +44,17 @@ def test_evaluation_data_model():
     assert feature.feature_type == FeatureType.FLOAT
 
 
-def test_drift_evaluation_import():
+def test_drift_metric_import():
     """Test that drift evaluation functions can be imported."""
     try:
         from a4s_eval.metrics.data_metric.drift_metric import (
             categorical_drift_test,
-            data_drift_evaluator,
+            data_drift_metric,
             numerical_drift_test,
         )
 
         # Just verify they can be imported
-        assert callable(data_drift_evaluator)
+        assert callable(data_drift_metric)
         assert callable(numerical_drift_test)
         assert callable(categorical_drift_test)
     except ImportError as e:

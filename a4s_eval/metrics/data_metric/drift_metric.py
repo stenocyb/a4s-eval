@@ -108,12 +108,12 @@ def feature_drift_test(
 
 
 @data_metric(name="Data drift")
-def data_drift_evaluator(
+def data_drift_metric(
     datashape: DataShape, reference: Dataset, evaluated: Dataset
 ) -> list[Measure]:
     """Calculate drift for all features between reference and evaluated datasets.
 
-    This evaluator compares the reference dataset against the evaluated dataset
+    This metric compares the reference dataset against the evaluated dataset
     for the current time window. The time windowing is handled at a higher level
     by the evaluation_tasks.py DateIterator.
 
