@@ -5,7 +5,7 @@ import numpy as np
 from a4s_eval.celery_app import celery_app
 from a4s_eval.data_model.measure import Measure
 from a4s_eval.metric_registry.prediction_metric_registry import (
-    model_pred_proba_evaluator_registry,
+    prediction_metric_registry,
 )
 from a4s_eval.service.api_client import (
     get_dataset_data,
@@ -29,7 +29,7 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
     print(f"API_URL_PREFIX: {API_URL_PREFIX}")
 
     # Check if any evaluators are registered
-    evaluator_list = list(model_pred_proba_evaluator_registry)
+    evaluator_list = list(prediction_metric_registry)
     get_logger().info(f"Registered evaluators ({len(evaluator_list)}):")
     for name, _ in evaluator_list:
         get_logger().info(f"  - {name}")
@@ -77,7 +77,7 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
                 y_curr_pred_proba = y_pred_proba[list(x_curr.index)]
 
                 evaluator_count = 0
-                for name, evaluator in model_pred_proba_evaluator_registry:
+                for name, evaluator in prediction_metric_registry:
                     evaluator_count += 1
                     get_logger().info(f"Running evaluator: {name}")
                     new_metrics = evaluator(

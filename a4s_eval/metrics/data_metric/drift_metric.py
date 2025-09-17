@@ -4,7 +4,7 @@ from scipy.stats import wasserstein_distance
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, FeatureType
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.metric_registry.data_metric_registry import data_evaluator
+from a4s_eval.metric_registry.data_metric_registry import data_metric
 from a4s_eval.utils.logging import get_logger
 
 logger = get_logger()
@@ -107,7 +107,7 @@ def feature_drift_test(
         raise ValueError(f"Feature type {feature_type} not supported")
 
 
-@data_evaluator(name="Data drift")
+@data_metric(name="Data drift")
 def data_drift_evaluator(
     datashape: DataShape, reference: Dataset, evaluated: Dataset
 ) -> list[Measure]:

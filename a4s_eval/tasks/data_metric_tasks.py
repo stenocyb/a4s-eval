@@ -4,7 +4,7 @@ from multiprocessing.util import get_logger
 
 from a4s_eval.celery_app import celery_app
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.metric_registry.data_metric_registry import data_evaluator_registry
+from a4s_eval.metric_registry.data_metric_registry import data_metric_registry
 from a4s_eval.service.api_client import (
     get_dataset_data,
     get_evaluation,
@@ -19,7 +19,7 @@ def dataset_evaluation_task(evaluation_pid: uuid.UUID) -> None:
     get_logger().info(f"Starting evaluation task for {evaluation_pid}.")
 
     # Check if any evaluators are registered
-    evaluator_list = list(data_evaluator_registry)
+    evaluator_list = list(data_metric_registry)
     get_logger().info(f"Registered evaluators ({len(evaluator_list)}):")
     for name, _ in evaluator_list:
         get_logger().info(f"  - {name}")
@@ -56,7 +56,7 @@ def dataset_evaluation_task(evaluation_pid: uuid.UUID) -> None:
                 )
                 evaluation.dataset.data = x_curr
 
-                for name, evaluator in data_evaluator_registry:
+                for name, evaluator in data_metric_registry:
                     get_logger().info(f"Running evaluator: {name}")
                     new_metrics = evaluator(
                         datashape, evaluation.model.dataset, evaluation.dataset

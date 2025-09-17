@@ -4,17 +4,17 @@ from types import ModuleType
 
 import a4s_eval.metrics
 from a4s_eval.metric_registry.data_metric_registry import (
-    DataEvaluatorRegistry,
-    data_evaluator_registry,
+    DataMetricRegistry,
+    data_metric_registry,
 )
 from a4s_eval.metric_registry.prediction_metric_registry import (
-    ModelPredProbaEvaluatorRegistry,
-    model_pred_proba_evaluator_registry,
+    PredictionMetricRegistry,
+    prediction_metric_registry,
 )
 
-registries: list[DataEvaluatorRegistry | ModelPredProbaEvaluatorRegistry] = [
-    data_evaluator_registry,
-    model_pred_proba_evaluator_registry,
+registries: list[DataMetricRegistry | PredictionMetricRegistry] = [
+    data_metric_registry,
+    prediction_metric_registry,
 ]
 
 

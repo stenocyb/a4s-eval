@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape
-from a4s_eval.metric_registry.data_metric_registry import DataEvaluator, data_evaluator_registry
+from a4s_eval.metric_registry.data_metric_registry import DataMetric, data_metric_registry
 
 
 @pytest.fixture
@@ -48,12 +48,12 @@ def ref_dataset(data_shape: DataShape) -> Dataset:
 
 
 def test_non_empty_registry():
-    assert len(data_evaluator_registry._functions) > 0
+    assert len(data_metric_registry._functions) > 0
 
 
-@pytest.mark.parametrize("evaluator_function", [e[1] for e in data_evaluator_registry])
-def test_data_evaluator_registry_contains_evaluator(
-    evaluator_function: DataEvaluator,
+@pytest.mark.parametrize("evaluator_function", [e[1] for e in data_metric_registry])
+def test_data_metric_registry_contains_evaluator(
+    evaluator_function: DataMetric,
     data_shape: DataShape,
     ref_dataset: Dataset,
     test_dataset: Dataset,

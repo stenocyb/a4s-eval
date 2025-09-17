@@ -11,7 +11,7 @@ from sklearn.metrics import (
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, Model
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.metric_registry.prediction_metric_registry import model_pred_proba_evaluator
+from a4s_eval.metric_registry.prediction_metric_registry import prediction_metric
 
 
 def robust_roc_auc_score(y_true: np.ndarray, y_pred_proba: np.ndarray) -> np.ndarray:
@@ -31,14 +31,14 @@ def robust_roc_auc_score(y_true: np.ndarray, y_pred_proba: np.ndarray) -> np.nda
     return roc_auc_score(y_true, y_pred_proba)
 
 
-@model_pred_proba_evaluator(name="Empty model pred proba evaluator")
+@prediction_metric(name="Empty model pred proba evaluator")
 def empty_model_evaluator(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
     return []
 
 
-@model_pred_proba_evaluator(name="Classification Performance evaluator: Accuracy")
+@prediction_metric(name="Classification Performance evaluator: Accuracy")
 def classification_accuracy_evaluator(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
@@ -56,7 +56,7 @@ def classification_accuracy_evaluator(
     return [metric]
 
 
-@model_pred_proba_evaluator(name="Classification Performance evaluator: F1 Score")
+@prediction_metric(name="Classification Performance evaluator: F1 Score")
 def classification_f1_score_evaluator(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
@@ -74,7 +74,7 @@ def classification_f1_score_evaluator(
     return [metric]
 
 
-@model_pred_proba_evaluator(name="Classification Performance evaluator: Precision")
+@prediction_metric(name="Classification Performance evaluator: Precision")
 def classification_precision_evaluator(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
@@ -92,7 +92,7 @@ def classification_precision_evaluator(
     return [metric]
 
 
-@model_pred_proba_evaluator(name="Classification Performance evaluator: Recall")
+@prediction_metric(name="Classification Performance evaluator: Recall")
 def classification_recall_evaluator(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
@@ -110,7 +110,7 @@ def classification_recall_evaluator(
     return [metric]
 
 
-@model_pred_proba_evaluator(
+@prediction_metric(
     name="Classification Performance evaluator: Matthews Correlation Coefficient"
 )
 def classification_matthews_corrcoef_evaluator(
@@ -130,7 +130,7 @@ def classification_matthews_corrcoef_evaluator(
     return [metric]
 
 
-@model_pred_proba_evaluator(name="Classification Performance evaluator: RROCAUC")
+@prediction_metric(name="Classification Performance evaluator: RROCAUC")
 def classification_roc_auc_evaluator(
     datashape: DataShape, model: Model, dataset: Dataset, y_pred_proba: np.ndarray
 ) -> list[Measure]:
