@@ -4,7 +4,10 @@ import pandas as pd
 import pytest
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape
-from a4s_eval.metric_registry.data_metric_registry import DataMetric, data_metric_registry
+from a4s_eval.metric_registry.data_metric_registry import (
+    DataMetric,
+    data_metric_registry,
+)
 
 
 @pytest.fixture

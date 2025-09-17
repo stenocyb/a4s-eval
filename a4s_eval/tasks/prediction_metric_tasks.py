@@ -26,7 +26,7 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
     get_logger().info(f"Starting evaluation task for {evaluation_pid}.")
 
     # Debug: Check registry and API configuration
-    print(f"API_URL_PREFIX: {API_URL_PREFIX}")
+    get_logger().debug(f"API_URL_PREFIX: {API_URL_PREFIX}")
 
     # Check if any evaluators are registered
     evaluator_list = list(prediction_metric_registry)
@@ -69,7 +69,9 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
 
             for i, (date_val, x_curr) in enumerate(date_iterator):
                 iteration_count += 1
-                print(f"Iteration {i}, date: {date_val}, data shape: {x_curr.shape}")
+                get_logger().info(
+                    f"Iteration {i}, date: {date_val}, data shape: {x_curr.shape}"
+                )
                 evaluation.dataset.data = x_curr
 
                 ## Get the current y_pred_proba for current date batch
@@ -89,7 +91,7 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
                     metrics.extend(new_metrics)
 
         except Exception as e:
-            print(f"Error in DateIterator: {e}")
+            get_logger().error(f"Error in DateIterator: {e}")
             import traceback
 
             traceback.print_exc()

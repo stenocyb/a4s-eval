@@ -93,7 +93,7 @@ def handle_error(
     exc: BaseException,
     traceback: object,
 ) -> None:
-    print(f"Error in evaluation {evaluation_id}:")
-    print(f"--\n\n{request} {exc} {traceback}")
+    logger.error(f"Error in evaluation {evaluation_id}:")
+    logger.error(f"--\n\n{request} {exc} {traceback}")
     mark_failed(evaluation_id)
-    print(f"Evaluation {evaluation_id} marked as failed due to error.")
+    logger.error(f"Evaluation {evaluation_id} marked as failed due to error.")
