@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, Model
-from a4s_eval.evaluations.model_evaluation.perf_evaluation import (
+from a4s_eval.metrics.prediction_metric.perf_metric import (
     classification_accuracy_evaluator,
     classification_f1_score_evaluator,
     classification_matthews_corrcoef_evaluator,

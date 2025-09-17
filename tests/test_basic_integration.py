@@ -47,7 +47,7 @@ def test_evaluation_data_model():
 def test_drift_evaluation_import():
     """Test that drift evaluation functions can be imported."""
     try:
-        from a4s_eval.evaluations.data_evaluation.drift_evaluation import (
+        from a4s_eval.metrics.data_metric.drift_metric import (
             categorical_drift_test,
             data_drift_evaluator,
             numerical_drift_test,

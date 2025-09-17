@@ -8,8 +8,8 @@ from a4s_eval.service.api_client import (
     mark_completed,
     mark_failed,
 )
-from a4s_eval.tasks.dataset_evaluation_task import dataset_evaluation_task
-from a4s_eval.tasks.model_evaluation_tasks import (
+from a4s_eval.tasks.data_metric_tasks import dataset_evaluation_task
+from a4s_eval.tasks.prediction_metric_tasks import (
     model_evaluation_task,
 )
 from a4s_eval.utils.logging import get_logger

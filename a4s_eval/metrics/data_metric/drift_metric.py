@@ -4,7 +4,7 @@ from scipy.stats import wasserstein_distance
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, FeatureType
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.evaluators.data_evaluator import data_evaluator
+from a4s_eval.metric_registry.data_metric_registry import data_evaluator
 from a4s_eval.utils.logging import get_logger
 
 logger = get_logger()

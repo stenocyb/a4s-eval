@@ -1,4 +1,4 @@
-from a4s_eval.evaluators.data_evaluator import data_evaluator_registry
+from a4s_eval.metric_registry.data_metric_registry import data_evaluator_registry
 
 
 def test_registration():

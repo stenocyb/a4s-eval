@@ -2,12 +2,12 @@ import importlib
 import pkgutil
 from types import ModuleType
 
-import a4s_eval.evaluations
-from a4s_eval.evaluators.data_evaluator import (
+import a4s_eval.metrics
+from a4s_eval.metric_registry.data_metric_registry import (
     DataEvaluatorRegistry,
     data_evaluator_registry,
 )
-from a4s_eval.evaluators.model_evaluator import (
+from a4s_eval.metric_registry.prediction_metric_registry import (
     ModelPredProbaEvaluatorRegistry,
     model_pred_proba_evaluator_registry,
 )
@@ -31,7 +31,7 @@ def auto_discover(package: ModuleType) -> None:
             auto_discover(module)  # recurse into subpackage
 
 
-auto_discover(a4s_eval.evaluations)
+auto_discover(a4s_eval.metrics)
 
 
 def get_n_evaluation() -> int:

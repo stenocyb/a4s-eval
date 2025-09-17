@@ -4,7 +4,7 @@ from multiprocessing.util import get_logger
 
 from a4s_eval.celery_app import celery_app
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.evaluators.data_evaluator import data_evaluator_registry
+from a4s_eval.metric_registry.data_metric_registry import data_evaluator_registry
 from a4s_eval.service.api_client import (
     get_dataset_data,
     get_evaluation,
