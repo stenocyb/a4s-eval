@@ -3,11 +3,11 @@ import pkgutil
 from types import ModuleType
 
 import a4s_eval.metrics
-from a4s_eval.metric_registry.data_metric_registry import (
+from a4s_eval.metric_registries.data_metric_registry import (
     DataMetricRegistry,
     data_metric_registry,
 )
-from a4s_eval.metric_registry.prediction_metric_registry import (
+from a4s_eval.metric_registries.prediction_metric_registry import (
     PredictionMetricRegistry,
     prediction_metric_registry,
 )

@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape
-from a4s_eval.metrics.data_metric.drift_metric import (
+from a4s_eval.metrics.data_metrics.drift_metric import (
     data_drift_metric,
 )
 

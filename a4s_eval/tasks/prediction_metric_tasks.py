@@ -4,7 +4,7 @@ import numpy as np
 
 from a4s_eval.celery_app import celery_app
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.metric_registry.prediction_metric_registry import (
+from a4s_eval.metric_registries.prediction_metric_registry import (
     prediction_metric_registry,
 )
 from a4s_eval.service.api_client import (

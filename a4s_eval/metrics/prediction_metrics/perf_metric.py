@@ -11,7 +11,7 @@ from sklearn.metrics import (
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, Model
 from a4s_eval.data_model.measure import Measure
-from a4s_eval.metric_registry.prediction_metric_registry import prediction_metric
+from a4s_eval.metric_registries.prediction_metric_registry import prediction_metric
 
 
 def robust_roc_auc_score(y_true: np.ndarray, y_pred_proba: np.ndarray) -> np.ndarray:

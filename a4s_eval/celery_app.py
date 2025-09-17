@@ -1,6 +1,6 @@
 from celery import Celery
 
-from a4s_eval.metric_registry import get_n_evaluation
+from a4s_eval.metric_registries import get_n_evaluation
 from a4s_eval.utils import env
 from a4s_eval.utils.logging import get_logger
 
