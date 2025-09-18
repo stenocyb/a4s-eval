@@ -8,8 +8,8 @@ from a4s_eval.service.api_client import (
     mark_completed,
     mark_failed,
 )
-from a4s_eval.tasks.dataset_evaluation_task import dataset_evaluation_task
-from a4s_eval.tasks.model_evaluation_tasks import (
+from a4s_eval.tasks.data_metric_tasks import dataset_evaluation_task
+from a4s_eval.tasks.prediction_metric_tasks import (
     model_evaluation_task,
 )
 from a4s_eval.utils.logging import get_logger
@@ -93,7 +93,7 @@ def handle_error(
     exc: BaseException,
     traceback: object,
 ) -> None:
-    print(f"Error in evaluation {evaluation_id}:")
-    print(f"--\n\n{request} {exc} {traceback}")
+    logger.error(f"Error in evaluation {evaluation_id}:")
+    logger.error(f"--\n\n{request} {exc} {traceback}")
     mark_failed(evaluation_id)
-    print(f"Evaluation {evaluation_id} marked as failed due to error.")
+    logger.error(f"Evaluation {evaluation_id} marked as failed due to error.")

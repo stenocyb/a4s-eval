@@ -7,14 +7,14 @@ import pandas as pd
 import pytest
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, Model
-from a4s_eval.evaluations.model_evaluation.perf_evaluation import (
-    classification_accuracy_evaluator,
-    classification_f1_score_evaluator,
-    classification_matthews_corrcoef_evaluator,
-    classification_precision_evaluator,
-    classification_recall_evaluator,
-    classification_roc_auc_evaluator,
-    empty_model_evaluator,
+from a4s_eval.metrics.prediction_metrics.perf_metric import (
+    classification_accuracy_metric,
+    classification_f1_score_metric,
+    classification_matthews_corrcoef_metric,
+    classification_precision_metric,
+    classification_recall_metric,
+    classification_roc_auc_metric,
+    empty_model_metric,
 )
 
 
@@ -87,7 +87,7 @@ def test_smoke(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ) -> None:
-    metrics = empty_model_evaluator(data_shape, ref_model, test_dataset, y_pred_proba)
+    metrics = empty_model_metric(data_shape, ref_model, test_dataset, y_pred_proba)
     assert len(metrics) == 0
 
 
@@ -97,7 +97,7 @@ def test_model_accuracy_evaluation(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ):
-    metrics = classification_accuracy_evaluator(
+    metrics = classification_accuracy_metric(
         data_shape, ref_model, test_dataset, y_pred_proba
     )
     assert len(metrics) == 1
@@ -112,7 +112,7 @@ def test_model_f1_score_evaluation(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ):
-    metrics = classification_f1_score_evaluator(
+    metrics = classification_f1_score_metric(
         data_shape, ref_model, test_dataset, y_pred_proba
     )
     assert len(metrics) == 1
@@ -127,7 +127,7 @@ def test_model_precision_evaluation(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ):
-    metrics = classification_precision_evaluator(
+    metrics = classification_precision_metric(
         data_shape, ref_model, test_dataset, y_pred_proba
     )
     assert len(metrics) == 1
@@ -142,7 +142,7 @@ def test_model_recall_evaluation(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ):
-    metrics = classification_recall_evaluator(
+    metrics = classification_recall_metric(
         data_shape, ref_model, test_dataset, y_pred_proba
     )
     assert len(metrics) == 1
@@ -157,7 +157,7 @@ def test_model_matthews_corrcoef_evaluation(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ):
-    metrics = classification_matthews_corrcoef_evaluator(
+    metrics = classification_matthews_corrcoef_metric(
         data_shape, ref_model, test_dataset, y_pred_proba
     )
     assert len(metrics) == 1
@@ -172,7 +172,7 @@ def test_model_roc_auc_evaluation(
     test_dataset: Dataset,
     y_pred_proba: np.ndarray,
 ):
-    metrics = classification_roc_auc_evaluator(
+    metrics = classification_roc_auc_metric(
         data_shape, ref_model, test_dataset, y_pred_proba
     )
     assert len(metrics) == 1

@@ -1,10 +1,13 @@
 import uuid
 
+import numpy as np
 import pandas as pd
 import pytest
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape
-from a4s_eval.evaluators.data_evaluator import DataEvaluator, data_evaluator_registry
+from a4s_eval.metrics.data_metrics.drift_metric import (
+    data_drift_metric,
+)
 
 
 @pytest.fixture
@@ -47,17 +50,19 @@ def ref_dataset(data_shape: DataShape) -> Dataset:
     )
 
 
-def test_non_empty_registry():
-    assert len(data_evaluator_registry._functions) > 0
-
-
-@pytest.mark.parametrize("evaluator_function", [e[1] for e in data_evaluator_registry])
-def test_data_evaluator_registry_contains_evaluator(
-    evaluator_function: DataEvaluator,
-    data_shape: DataShape,
-    ref_dataset: Dataset,
-    test_dataset: Dataset,
+def test_data_drift_metric_generates_metrics(
+    data_shape: DataShape, ref_dataset: Dataset, test_dataset: Dataset
 ):
-    metrics = evaluator_function(data_shape, ref_dataset, test_dataset)
+    """
+    # This function tests the data drift metric to ensure it generates some metrics.
+    """
 
-    assert len(metrics) > 0
+    metrics = data_drift_metric(data_shape, ref_dataset, test_dataset)
+    assert len(metrics) == len(ref_dataset.shape.features)
+
+
+def test_data_drift_metric_metrics_not_nan(
+    data_shape: DataShape, ref_dataset: Dataset, test_dataset: Dataset
+):
+    metrics = data_drift_metric(data_shape, ref_dataset, test_dataset)
+    assert all(not np.isnan(metric.score) for metric in metrics)

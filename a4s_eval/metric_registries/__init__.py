@@ -2,19 +2,19 @@ import importlib
 import pkgutil
 from types import ModuleType
 
-import a4s_eval.evaluations
-from a4s_eval.evaluators.data_evaluator import (
-    DataEvaluatorRegistry,
-    data_evaluator_registry,
+import a4s_eval.metrics
+from a4s_eval.metric_registries.data_metric_registry import (
+    DataMetricRegistry,
+    data_metric_registry,
 )
-from a4s_eval.evaluators.model_evaluator import (
-    ModelPredProbaEvaluatorRegistry,
-    model_pred_proba_evaluator_registry,
+from a4s_eval.metric_registries.prediction_metric_registry import (
+    PredictionMetricRegistry,
+    prediction_metric_registry,
 )
 
-registries: list[DataEvaluatorRegistry | ModelPredProbaEvaluatorRegistry] = [
-    data_evaluator_registry,
-    model_pred_proba_evaluator_registry,
+registries: list[DataMetricRegistry | PredictionMetricRegistry] = [
+    data_metric_registry,
+    prediction_metric_registry,
 ]
 
 
@@ -31,7 +31,7 @@ def auto_discover(package: ModuleType) -> None:
             auto_discover(module)  # recurse into subpackage
 
 
-auto_discover(a4s_eval.evaluations)
+auto_discover(a4s_eval.metrics)
 
 
 def get_n_evaluation() -> int:

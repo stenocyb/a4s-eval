@@ -3,7 +3,7 @@ from typing import Callable, Iterator, Protocol
 import numpy as np
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, Model
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 
 
 class ModelPredProbaEvaluator(Protocol):
@@ -13,7 +13,7 @@ class ModelPredProbaEvaluator(Protocol):
         model: Model,
         dataset: Dataset,
         y_pred_proba: np.ndarray,
-    ) -> list[Metric]:
+    ) -> list[Measure]:
         """Run a specific model evaluation.
 
         Args:
@@ -25,7 +25,7 @@ class ModelPredProbaEvaluator(Protocol):
         raise NotImplementedError
 
 
-class ModelPredProbaEvaluatorRegistry:
+class PredictionMetricRegistry:
     def __init__(self) -> None:
         self._functions: dict[str, ModelPredProbaEvaluator] = {}
 
@@ -39,10 +39,10 @@ class ModelPredProbaEvaluatorRegistry:
         return self._functions
 
 
-model_pred_proba_evaluator_registry = ModelPredProbaEvaluatorRegistry()
+prediction_metric_registry = PredictionMetricRegistry()
 
 
-def model_pred_proba_evaluator(
+def prediction_metric(
     name: str,
 ) -> Callable[[ModelPredProbaEvaluator], ModelPredProbaEvaluator]:
     """Decorator to register a function as a model evaluator for A4S.
@@ -52,7 +52,7 @@ def model_pred_proba_evaluator(
     """
 
     def func_decorator(func: ModelPredProbaEvaluator) -> ModelPredProbaEvaluator:
-        model_pred_proba_evaluator_registry.register(name, func)
+        prediction_metric_registry.register(name, func)
         return func
 
     return func_decorator

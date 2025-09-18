@@ -10,7 +10,7 @@ from datetime import datetime
 import pytest
 
 from a4s_eval.data_model.evaluation import Feature, FeatureType
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 
 
 def test_celery_tasks_import():
@@ -28,7 +28,7 @@ def test_evaluation_data_model():
     """Test that evaluation data models work correctly."""
 
     # Test metric creation
-    metric = Metric(name="test_metric", score=0.95, time=datetime.now())
+    metric = Measure(name="test_metric", score=0.95, time=datetime.now())
     assert metric.name == "test_metric"
     assert metric.score == 0.95
 
@@ -44,17 +44,17 @@ def test_evaluation_data_model():
     assert feature.feature_type == FeatureType.FLOAT
 
 
-def test_drift_evaluation_import():
+def test_drift_metric_import():
     """Test that drift evaluation functions can be imported."""
     try:
-        from a4s_eval.evaluations.data_evaluation.drift_evaluation import (
+        from a4s_eval.metrics.data_metrics.drift_metric import (
             categorical_drift_test,
-            data_drift_evaluator,
+            data_drift_metric,
             numerical_drift_test,
         )
 
         # Just verify they can be imported
-        assert callable(data_drift_evaluator)
+        assert callable(data_drift_metric)
         assert callable(numerical_drift_test)
         assert callable(categorical_drift_test)
     except ImportError as e:

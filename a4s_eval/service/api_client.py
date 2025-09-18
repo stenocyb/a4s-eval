@@ -8,7 +8,7 @@ import requests
 from pydantic import BaseModel
 
 from a4s_eval.data_model.evaluation import DataShape, Evaluation
-from a4s_eval.data_model.metric import Metric
+from a4s_eval.data_model.measure import Measure
 from a4s_eval.utils.env import API_URL_PREFIX
 from a4s_eval.utils.logging import get_logger
 
@@ -17,11 +17,6 @@ logger = get_logger()
 
 class EvaluationStatusUpdateDTO(BaseModel):
     status: str
-
-
-class MetricDTO(BaseModel):
-    name: str
-    value: float | str
 
 
 def fetch_pending_evaluations() -> list[uuid.UUID]:
@@ -149,7 +144,9 @@ def get_evaluation(
     return Evaluation.model_validate(get_evaluation_request(evaluation_pid))
 
 
-def post_metrics(evaluation_pid: uuid.UUID, metrics: list[Metric]) -> requests.Response:
+def post_measures(
+    evaluation_pid: uuid.UUID, metrics: list[Measure]
+) -> requests.Response:
     """Post metrics to the API for a specific evaluation.
 
     Args:

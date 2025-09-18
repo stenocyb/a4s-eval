@@ -1,35 +1,25 @@
+import traceback
 import uuid
-
-import numpy as np
+from multiprocessing.util import get_logger
 
 from a4s_eval.celery_app import celery_app
-from a4s_eval.data_model.metric import Metric
-from a4s_eval.evaluators.model_evaluator import (
-    model_pred_proba_evaluator_registry,
-)
+from a4s_eval.data_model.measure import Measure
+from a4s_eval.metric_registries.data_metric_registry import data_metric_registry
 from a4s_eval.service.api_client import (
     get_dataset_data,
     get_evaluation,
-    get_onnx_model,
     get_project_datashape,
-    post_metrics,
+    post_measures,
 )
 from a4s_eval.utils.dates import DateIterator
-from a4s_eval.utils.env import API_URL_PREFIX
-from a4s_eval.utils.logging import get_logger
-
-logger = get_logger()
 
 
 @celery_app.task
-def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
+def dataset_evaluation_task(evaluation_pid: uuid.UUID) -> None:
     get_logger().info(f"Starting evaluation task for {evaluation_pid}.")
 
-    # Debug: Check registry and API configuration
-    print(f"API_URL_PREFIX: {API_URL_PREFIX}")
-
     # Check if any evaluators are registered
-    evaluator_list = list(model_pred_proba_evaluator_registry)
+    evaluator_list = list(data_metric_registry)
     get_logger().info(f"Registered evaluators ({len(evaluator_list)}):")
     for name, _ in evaluator_list:
         get_logger().info(f"  - {name}")
@@ -37,22 +27,14 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
     try:
         evaluation = get_evaluation(evaluation_pid)
         evaluation.dataset.data = get_dataset_data(evaluation.dataset.pid)
-        session = get_onnx_model(evaluation.model.pid)
+        evaluation.model.dataset.data = get_dataset_data(evaluation.model.dataset.pid)
 
-        metrics: list[Metric] = []
-
-        datashape = get_project_datashape(evaluation.project.pid)
+        metrics: list[Measure] = []
 
         x_test = evaluation.dataset.data
-        x_test_np = x_test[[f.name for f in datashape.features]].to_numpy()
 
         iteration_count = 0
-
-        input_name = session.get_inputs()[0].name
-        label_name = session.get_outputs()[1].name
-        pred_onx = session.run([label_name], {input_name: x_test_np})[0]
-        y_pred_proba = np.array([list(d.values()) for d in pred_onx])
-        get_logger().info("Computation finished for Y prediction probability.")
+        datashape = get_project_datashape(evaluation.project.pid)
 
         try:
             if not datashape.date:
@@ -69,37 +51,30 @@ def model_evaluation_task(evaluation_pid: uuid.UUID) -> None:
 
             for i, (date_val, x_curr) in enumerate(date_iterator):
                 iteration_count += 1
-                print(f"Iteration {i}, date: {date_val}, data shape: {x_curr.shape}")
+                get_logger().info(
+                    f"Iteration {i}, date: {date_val}, data shape: {x_curr.shape}"
+                )
                 evaluation.dataset.data = x_curr
 
-                ## Get the current y_pred_proba for current date batch
-                ## ATTENTION: This assumes that the index of x_test is not predifined
-                y_curr_pred_proba = y_pred_proba[list(x_curr.index)]
-
-                evaluator_count = 0
-                for name, evaluator in model_pred_proba_evaluator_registry:
-                    evaluator_count += 1
+                for name, evaluator in data_metric_registry:
                     get_logger().info(f"Running evaluator: {name}")
                     new_metrics = evaluator(
-                        datashape,
-                        evaluation.model,
-                        evaluation.dataset,
-                        y_curr_pred_proba,
+                        datashape, evaluation.model.dataset, evaluation.dataset
                     )
                     metrics.extend(new_metrics)
 
         except Exception as e:
-            print(f"Error in DateIterator: {e}")
-            import traceback
-
+            get_logger().error(f"Error in DateIterator: {e}")
             traceback.print_exc()
 
         get_logger().info(f"Total iterations: {iteration_count}")
         get_logger().info(f"Total metrics generated: {len(metrics)}")
 
+        evaluation.dataset.data = x_test
+
         get_logger().debug(f"Posting {len(metrics)} metrics to API...")
         try:
-            response = post_metrics(evaluation_pid, metrics)
+            response = post_measures(evaluation_pid, metrics)
             get_logger().info(
                 f"Metrics posted successfully, status: {response.status_code}."
             )

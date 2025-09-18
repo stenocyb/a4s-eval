@@ -3,8 +3,8 @@ from scipy.spatial.distance import jensenshannon
 from scipy.stats import wasserstein_distance
 
 from a4s_eval.data_model.evaluation import Dataset, DataShape, FeatureType
-from a4s_eval.data_model.metric import Metric
-from a4s_eval.evaluators.data_evaluator import data_evaluator
+from a4s_eval.data_model.measure import Measure
+from a4s_eval.metric_registries.data_metric_registry import data_metric
 from a4s_eval.utils.logging import get_logger
 
 logger = get_logger()
@@ -64,7 +64,7 @@ def feature_drift_test(
     x_new: "pd.Series[float]",
     feature_type: FeatureType,
     date: pd.Timestamp,
-) -> Metric:
+) -> Measure:
     """Calculate drift for a specific feature based on its type.
 
     Args:
@@ -74,7 +74,7 @@ def feature_drift_test(
         date: Timestamp for the metric
 
     Returns:
-        Metric: Drift metric object with computed score
+        Measure: Drift metric object with computed score
 
     Raises:
         ValueError: If feature type is not supported
@@ -83,7 +83,7 @@ def feature_drift_test(
 
     if feature_type == FeatureType.INTEGER or feature_type == FeatureType.FLOAT:
         score = numerical_drift_test(x_ref, x_new)
-        metric = Metric(
+        metric = Measure(
             name="wasserstein_distance",
             score=score,
             time=date.to_pydatetime(),
@@ -93,7 +93,7 @@ def feature_drift_test(
 
     elif feature_type == FeatureType.CATEGORICAL:
         score = categorical_drift_test(x_ref, x_new)
-        metric = Metric(
+        metric = Measure(
             name="jensenshannon",
             score=score,
             time=date.to_pydatetime(),
@@ -107,13 +107,13 @@ def feature_drift_test(
         raise ValueError(f"Feature type {feature_type} not supported")
 
 
-@data_evaluator(name="Data drift")
-def data_drift_evaluator(
+@data_metric(name="Data drift")
+def data_drift_metric(
     datashape: DataShape, reference: Dataset, evaluated: Dataset
-) -> list[Metric]:
+) -> list[Measure]:
     """Calculate drift for all features between reference and evaluated datasets.
 
-    This evaluator compares the reference dataset against the evaluated dataset
+    This metric compares the reference dataset against the evaluated dataset
     for the current time window. The time windowing is handled at a higher level
     by the evaluation_tasks.py DateIterator.
 
@@ -122,7 +122,7 @@ def data_drift_evaluator(
         evaluated: The evaluated dataset (current time window)
 
     Returns:
-        list[Metric]: List of drift metrics for each feature
+        list[Measure]: List of drift metrics for each feature
     """
     logger.debug(
         f"Starting data drift evaluation - Reference shape: {reference.data.shape}, Evaluated shape: {evaluated.data.shape}"
