@@ -8,6 +8,7 @@ from a4s_eval.metric_registries.data_metric_registry import (
     DataMetric,
     data_metric_registry,
 )
+from tests.save_measures_utils import save_measures
 
 
 @pytest.fixture
@@ -54,13 +55,13 @@ def test_non_empty_registry():
     assert len(data_metric_registry._functions) > 0
 
 
-@pytest.mark.parametrize("evaluator_function", [e[1] for e in data_metric_registry])
+@pytest.mark.parametrize("evaluator_function", data_metric_registry)
 def test_data_metric_registry_contains_evaluator(
-    evaluator_function: DataMetric,
+    evaluator_function: tuple[str, DataMetric],
     data_shape: DataShape,
     ref_dataset: Dataset,
     test_dataset: Dataset,
 ):
-    metrics = evaluator_function(data_shape, ref_dataset, test_dataset)
-
-    assert len(metrics) > 0
+    measures = evaluator_function[1](data_shape, ref_dataset, test_dataset)
+    save_measures(evaluator_function[0], measures)
+    assert len(measures) > 0
