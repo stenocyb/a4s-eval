@@ -88,3 +88,13 @@ class Evaluation(BaseModel):
     dataset: Dataset
     model: Model
     project: Project
+
+
+class ModelFramework(str, enum.Enum):
+    ONNX = "onnx"
+    TORCH = "torch"
+
+
+class ModelConfig(BaseModel):
+    framework: ModelFramework
+    path: str
