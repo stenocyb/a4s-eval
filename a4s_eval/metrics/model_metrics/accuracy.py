@@ -17,7 +17,7 @@ def accuracy(
 ) -> list[Measure]:
     
     # Both x and y (the features and the target) are contained in dataset.data as a dataframe.
-    # To identify the target (y), use the datashape.target object, it has a name property. Use this property to index the aforementioned dataframe.
+    # To identify the target (y), use the datashape.target object, which has a name property. Use this property to index the aforementioned dataframe.
     # To identify the features (x), use the datashape.features list of object. Similarly each object in this list has a name property to index the dataframe.
     
     # Inspect FunctionalModel definition to identify the function to use to compute the model predictions.
