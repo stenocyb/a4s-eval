@@ -26,6 +26,8 @@ def accuracy(
     
     # Below is a placeholder that allows pytest to pass.
     
+    # If this takes too many resources (e.g., runs very long or causes a memory error), feel free to limit the dataset to the first 10,000 examples.
+    
     accuracy_value = 0.99
     
     current_time = datetime.now()
