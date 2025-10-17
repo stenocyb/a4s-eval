@@ -92,3 +92,31 @@ def test_data_metric_registry_contains_evaluator(
     )
     save_measures(evaluator_function[0], measures)
     assert len(measures) > 0
+
+
+@pytest.mark.parametrize("evaluator_function", model_metric_registry)
+def test_data_metric_registry_contains_evaluator_batched(
+    evaluator_function: tuple[str, ModelMetric],
+    data_shape: DataShape,
+    ref_model: Model,
+    test_dataset: Dataset,
+    functional_model: FunctionalModel,
+):
+    original_data = test_dataset.data
+    measures = []
+
+    for i in range(0, len(original_data), 10000):
+        batch_end = min(i + 10000, len(original_data))
+
+        test_dataset.data = original_data.iloc[i:batch_end].copy()
+
+        batch_measures = evaluator_function[1](
+            data_shape, ref_model, test_dataset, functional_model
+        )
+
+        measures.extend(batch_measures)
+
+    test_dataset.data = original_data
+
+    save_measures(evaluator_function[0], measures)
+    assert len(measures) > 0
