@@ -1,7 +1,6 @@
 import datetime
 import uuid
 
-import numpy as np
 import pandas as pd
 import pytest
 import torch
@@ -12,7 +11,13 @@ import torchvision.models as models
 
 from tests.save_measures_utils import save_measures
 
-from a4s_eval.data_model.evaluation import Dataset, DataShape, Model, FeatureType, Feature
+from a4s_eval.data_model.evaluation import (
+    Dataset,
+    DataShape,
+    Model,
+    FeatureType,
+    Feature,
+)
 from a4s_eval.data_model.measure import Measure
 from a4s_eval.metric_registries.model_metric_registry import model_metric_registry
 from a4s_eval.metric_registries.model_metric_registry import ModelMetric
@@ -31,9 +36,7 @@ def _load_cifar10_model() -> nn.Module:
 
     # load pretrained CIFAR-10 checkpoint
     checkpoint_url = "https://huggingface.co/edadaltocg/resnet18_cifar10/resolve/main/pytorch_model.bin"
-    state_dict = torch.hub.load_state_dict_from_url(
-        checkpoint_url, map_location="cpu"
-    )
+    state_dict = torch.hub.load_state_dict_from_url(checkpoint_url, map_location="cpu")
     model.load_state_dict(state_dict)
 
     model.eval()
@@ -46,7 +49,7 @@ def data_shape() -> DataShape:
         pid=uuid.uuid4(),
         name="target",
         feature_type=FeatureType.INTEGER,
-        min_value=0,                        # CIFAR-10 has 10 classes
+        min_value=0,  # CIFAR-10 has 10 classes
         max_value=9,
     )
 
@@ -62,9 +65,11 @@ def data_shape() -> DataShape:
 
     return datashape
 
+
 @pytest.fixture
 def ref_model(test_dataset: Dataset) -> Model:
     return _load_cifar10_model()
+
 
 @pytest.fixture
 def test_dataset(data_shape: DataShape) -> Dataset:
@@ -110,9 +115,7 @@ def test_monotonicity_evaluation(
     """
     Test the monotonicity metric on CIFAR-10 data.
     """
-    metrics = monotonicity_cifar10(
-        data_shape, ref_model, test_dataset
-    )
+    metrics = monotonicity_cifar10(data_shape, ref_model, test_dataset)
 
     assert len(metrics) == 1
     monotonicity_metric: Measure = metrics[0]
@@ -132,9 +135,7 @@ def test_monotonicity_value_evaluation(
     """
     Test that monotonicity metric produces reasonable values.
     """
-    metrics = monotonicity_cifar10(
-        data_shape, ref_model, test_dataset
-    )
+    metrics = monotonicity_cifar10(data_shape, ref_model, test_dataset)
 
     monotonicity_metric: Measure = metrics[0]
 
@@ -149,8 +150,8 @@ def test_monotonicity_value_evaluation(
         f"Expected monotonicity > 0.3 for pretrained model, "
         f"got {monotonicity_metric.score}"
     )
-    
-    
+
+
 # Evaluator functions
 @pytest.mark.parametrize("evaluator_function", model_metric_registry)
 def test_monotonicity_cifar10_single(
@@ -159,12 +160,10 @@ def test_monotonicity_cifar10_single(
     ref_model: Model,
     test_dataset: Dataset,
 ):
-    measures = monotonicity_cifar10(
-        data_shape, ref_model, test_dataset
-    )
+    measures = monotonicity_cifar10(data_shape, ref_model, test_dataset)
     save_measures(evaluator_function[0], measures)
     assert len(measures) > 0
-    
+
 
 @pytest.mark.parametrize("evaluator_function", model_metric_registry)
 def test_monotonicity_cifar10_batched(
@@ -180,11 +179,9 @@ def test_monotonicity_cifar10_batched(
         batch_end = min(i + 2, len(original_data))
         test_dataset.data = original_data.iloc[i:batch_end].copy()
 
-        batch_measures = monotonicity_cifar10(
-            data_shape, ref_model, test_dataset
-        )
+        batch_measures = monotonicity_cifar10(data_shape, ref_model, test_dataset)
         measures.extend(batch_measures)
-        
+
     test_dataset.data = original_data
     save_measures(evaluator_function[0], measures)
 

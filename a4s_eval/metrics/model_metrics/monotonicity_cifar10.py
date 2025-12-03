@@ -12,18 +12,16 @@ import quantus
 
 @model_metric(name="monotonicity")
 def monotonicity_cifar10(
-    datashape: DataShape,
-    model: Model,
-    dataset: Dataset
+    datashape: DataShape, model: Model, dataset: Dataset
 ) -> list[Measure]:
     """
     Measures if increasing feature attribution scores leads to increasing model confidence.
-    
+
     Arguments:
         datashape: DataShape object containing feature information
         model:     The PyTorch model
         dataset:   Dataset object containing the test data
-    
+
     Returns:
         List containing a single Measure object with the monotonicity score
     """
@@ -34,26 +32,26 @@ def monotonicity_cifar10(
     torch_model = model
     if torch_model is None:
         return [Measure(name="monotonicity", score=0.0, time=datetime.now())]
-    
+
     torch_model.eval()
-    
+
     # extract data from dataset, features & labels
     data_df = dataset.data
-    
+
     num_samples = min(num_samples, len(data_df))
     data_df = data_df.iloc[:num_samples]
-    
+
     try:
-        if 'image' in data_df.columns:
-            x_tensor = torch.stack(list(data_df['image'].values))
+        if "image" in data_df.columns:
+            x_tensor = torch.stack(list(data_df["image"].values))
         else:
             raise ValueError("Dataset must contain 'image' column with tensor data")
-        
+
         if datashape.target and datashape.target.name in data_df.columns:
             y_labels = data_df[datashape.target.name].values
         else:
             raise ValueError("Dataset must contain target column")
-            
+
     except Exception as e:
         print(f"Error extracting data: {e}")
         return [Measure(name="monotonicity", score=0.0, time=datetime.now())]

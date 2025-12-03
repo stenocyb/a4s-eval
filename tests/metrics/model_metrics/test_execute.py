@@ -87,6 +87,11 @@ def test_data_metric_registry_contains_evaluator(
     test_dataset: Dataset,
     functional_model: FunctionalModel,
 ):
+    if (
+        evaluator_function[0] == "monotonicity"
+    ):  # skip test as we have defined our own in test_monotonicity_metric.py
+        pytest.skip("Skipping test for monotonicity_cifar10")
+
     measures = evaluator_function[1](
         data_shape, ref_model, test_dataset, functional_model
     )
@@ -102,6 +107,9 @@ def test_data_metric_registry_contains_evaluator_batched(
     test_dataset: Dataset,
     functional_model: FunctionalModel,
 ):
+    if evaluator_function[0] == "monotonicity":
+        pytest.skip("Skipping test for monotonicity_cifar10")
+
     original_data = test_dataset.data
     measures = []
 
