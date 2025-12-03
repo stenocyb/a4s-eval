@@ -4,7 +4,7 @@ import pytest
 
 
 DATE_FEATURE = "issue_d"
-N_SAMPLES: int | None = 1000  # increase to test batch accuracy metric
+N_SAMPLES: int | None = 200000  # increase to test batch accuracy metric
 
 
 def sample(df: pd.DataFrame) -> pd.DataFrame:

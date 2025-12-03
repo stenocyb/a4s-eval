@@ -26,7 +26,6 @@ def monotonicity_cifar10(
         List containing a single Measure object with the monotonicity score
     """
     explanation_method = "integrated_gradients"
-    num_samples = 3
 
     # extract model
     torch_model = model
@@ -37,9 +36,6 @@ def monotonicity_cifar10(
 
     # extract data from dataset, features & labels
     data_df = dataset.data
-
-    num_samples = min(num_samples, len(data_df))
-    data_df = data_df.iloc[:num_samples]
 
     try:
         if "image" in data_df.columns:
@@ -68,10 +64,9 @@ def monotonicity_cifar10(
 
     # generate attributions
     try:
-        with torch.no_grad():
-            outputs = torch_model(x_tensor)
-            predicted_classes = torch.argmax(outputs, dim=1)
-            target_tensor = predicted_classes
+        outputs = torch_model(x_tensor)
+        predicted_classes = torch.argmax(outputs, dim=1)
+        target_tensor = predicted_classes
 
         if explanation_method == "gradient_shap":
             baseline = torch.zeros_like(x_tensor)
