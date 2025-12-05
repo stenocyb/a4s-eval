@@ -56,7 +56,7 @@ def load_cifar10_batch(num_samples: int = 10):
     )
 
     test_set = datasets.CIFAR10(
-        root="../../data", train=False, download=True, transform=transform
+        root="./a4s-eval/tests/data", train=False, download=True, transform=transform
     )
 
     loader = torch.utils.data.DataLoader(
