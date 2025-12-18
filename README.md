@@ -25,7 +25,7 @@ The metric is implemented in `a4s_eval/metrics/model_metrics/monotonicity_cifar1
 
 Tests are located in `tests/metrics/model_metrics/test_monotonicity_metric.py`
 
-This metric measures if increasing feature attribution scores leads to increasing model confidence, specifically designed for CIFAR-10 image classification tasks.
+This metric implements Quantus’ MonotonicityCorrelation on CIFAR-10 vision models. It computes Captum attributions (currently Integrated Gradients) and returns the mean monotonicity-correlation score across the batch.
 
 ### Running tests
 

@@ -15,7 +15,7 @@ def monotonicity_cifar10(
     datashape: DataShape, model: Model, dataset: Dataset
 ) -> list[Measure]:
     """
-    Measures if increasing feature attribution scores leads to increasing model confidence.
+    Checks if features ranked important by the explainer are also the ones that most change the model output when perturbed.
 
     Arguments:
         datashape: DataShape object containing feature information
